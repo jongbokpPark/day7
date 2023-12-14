@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      #wrapper {
+        width: 1400px;
+        height: 900px;
+        /* margin: 0 auto; */
+        background: yellow;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      #content {
+        width: 1200px;
+        height: 100%;
+        background: url("../images/roller/rollercoaster.jpg");
+        background-size: 1200px 900px;
+      }
+      #info {
+        width: 200px;
+        height: 100%;
+        background-color: rgb(248, 225, 225);
+        overflow: scroll;
+      }
+      button {
+        width: 240px;
+        height: 52px;
+        /* margin: 0 auto; */
+        background: navy;
+        color: white;
+        font-size: 22px;
+        font-weight: bold;
+        line-height: 42px;
+        text-align: center;
+        display: block;
+        position: absolute;
+      }
+    </style>
+
+    <script>
+      let content;
+      let info;
+      let log = new Array(); // 점들을 모아 놓을 배열
+      let mario;
+      let flag = false; // 주인공을 움직이게 할지의 여부를 결정짖는
+      let f = 0; // 주인공이 접근할 층수
+
+      // 사용자가 클릭한 위치의 좌표(x,y)를 구하여
+      // 누적해놓자..[23,45]
+      function createPoint() {
+        let x = event.layerX;
+        let y = event.layerY;
+
+        // console.log(x, y);
+        // 일차원 배열 생성
+
+        let dot = [x, y];
+        log.push(dot);
+        //5. 1*1 짜리 div를 점으로 표현해보자.
+        let rect = document.createElement("div");
+        rect.style.width = 5 + "px";
+        rect.style.height = 5 + "px";
+        rect.style.background = "red";
+        rect.style.borderRadius = "50%";
+        rect.style.position = "absolute";
+        rect.style.left = dot[0] + "px";
+        rect.style.top = dot[1] + "px";
+        // 6. content 에 부착하자 !
+        content.appendChild(rect);
+
+        printInfo();
+      }
+
+      // 좌표정보 출력
+      function printInfo() {
+        // 정보가 누적된 이차원 배열에서 좌표 정보를 꺼내어 출력한다.
+        info.innerText = ""; // 기존 출력값 삭제
+        for (let i = 0; i < log.length; i++) {
+          let pos = log[i]; // 일차원 배열 꺼내기
+
+          info.innerText += "x=" + pos[0] + ", y=" + pos[1] + "\n";
+        }
+      }
+
+      function createMario() {
+        mario = document.createElement("img");
+        mario.src = "../images/roller/simpson.png";
+        mario.style.width = 25 + "px";
+        mario.style.position = "absolute";
+        mario.style.left = 0 + "px";
+        mario.style.top = 0 + "px";
+
+        content.appendChild(mario);
+      }
+
+      // 주인공아ㅣ 끊임 없이 움직이도록 호출
+      function gameLoop() {
+        if (flag) {
+          // 논리값
+          console.log("움직일래요!");
+          mario.style.left = log[f][0] + "px";
+          mario.style.top = log[f][1] + "px";
+          if (f < log.length - 1) {
+            f++; // 층수 증가
+          }
+        }
+      }
+
+      function start() {
+        flag = !flag;
+      }
+
+      addEventListener("load", function () {
+        content = document.getElementById("content");
+        info = document.getElementById("info");
+        createMario();
+
+        setInterval("gameLoop()", 100);
+      });
+    </script>
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="content" onmousedown="createPoint()"></div>
+      <div id="info"></div>
+    </div>
+
+    <button onclick="start()">시작</button>
+  </body>
+</html>

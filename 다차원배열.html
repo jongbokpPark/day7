@@ -1,0 +1,43 @@
+<script>
+  let fruit = ["bavava", "apple", "orange", "graph"];
+  let car = ["AUDI", "Benz", "BMW", "KIA"];
+  let skill = ["Oracle", "Java", "React", "Spring"];
+
+  let box = [];
+
+  // box에 과일 일차원 채워넣기
+  // 배열변수명.push(추가할배열변수명)는 공간을 새롭게 추가하면서 넣기
+
+  box.push(fruit); // 과일 일차원배열 추가
+  box.push(car); // 자동차 일차원배열 추가
+  box.push(skill); // 스킬에 일차원배열 추가
+
+  // 과일 일차원 배열 안에 모든 요소를 출력하세요.
+  for (let i = 0; i < fruit.length; i++) {
+    document.write(fruit[i]);
+    document.write("<br/>");
+  }
+
+  document.write("<br/>-------------------------------------------<br/><br/>");
+
+  for (let i = 0; i < car.length; i++) {
+    document.write(car[i]);
+    document.write("<br/>");
+  }
+
+  document.write("<br/>-------------------------------------------<br/><br/>");
+
+  for (let i = 0; i < skill.length; i++) {
+    document.write(skill[i]);
+    document.write("<br/>");
+  }
+
+  document.write("<br/>-------------------------------------------<br/><br/>");
+
+  for (let a = 0; a < box.length; a++) {
+    for (let i = 0; i < box[a].length; i++) {
+      document.write(box[a][i] + " ");
+    }
+    document.write("<br/>");
+  }
+</script>

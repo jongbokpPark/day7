@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #wrapper {
+        width: 600px;
+        height: 400px;
+        margin: 0 auto;
+        background: navy;
+      }
+      #header {
+        width: 100%;
+        height: 50px;
+        background: beige;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      #header div {
+        flex: 1;
+        height: 100%;
+        line-height: 50px;
+        text-align: center;
+        border-radius: 10px 10px 0 0;
+      }
+      #content {
+        width: 100%;
+        height: 350px;
+        background: aquamarine;
+      }
+      #content div {
+        width: 100%;
+        height: 350px;
+      }
+      #content div#table1 {
+        background: crimson;
+      }
+      #content div#table2 {
+        background: orangered;
+        display: none;
+      }
+      #content div#table3 {
+        background: yellowgreen;
+        display: none;
+      }
+    </style>
+    <script>
+      let tab; // 탭메뉴 배열
+      let table; // 게시판 테이블 배열
+
+      // 선택한 탭에 해당하는 테이블은 보여주되,
+      // 나머지는 모두 않보이게 처리..
+      function showHide(index) {
+        // console.log("당신이 선택한 탭은", index);
+
+        // 1) 전송된 인덱스 값이 0이면
+        // 0번쨰 테이블 보이고, 1, 2번째 테이블은 않보이게
+
+        // 1) 전송된 인덱스 값이 1이면
+        // 1번쨰 테이블 보이고, 0, 2번째 테이블은 않보이게
+
+        // 1) 전송된 인덱스 값이 2이면
+        // 2번쨰 테이블 보이고, 0, 1번째 테이블은 않보이게
+
+        for (let z = 0; z < table.length; z++) {
+          if (index == z) {
+            // 선택한 탭과 동일한 테이블경우
+            table[z].style.display = "block";
+          } else {
+            // 나머지 테이블
+            table[z].style.display = "none";
+          }
+        }
+      }
+
+      function init() {
+        // div들이 탭이라는 이름으로 배열해 되었기에
+        // 규칙이 생성되어 보다 다양한 처리가 가능하다.
+        tab = document.getElementsByName("tab");
+        table = document.getElementsByName("table");
+
+        for (let i = 0; i < tab.length; i++) {
+          tab[i].addEventListener("click", function () {
+            // console.log(i, "클릭했어");
+
+            // 클릭한 탭에 매칭되는 게시물 영역을 보여주기
+            showHide(i);
+          });
+        }
+      }
+
+      addEventListener("load", function () {
+        init();
+      });
+    </script>
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="header">
+        <!-- 탭의 0번쨰 -->
+        <div style="background: red" name="tab">QnA</div>
+
+        <!-- 탭의 0번쨰 -->
+        <div style="background: orange" name="tab">FAQ</div>
+
+        <!-- 탭의 0번쨰 -->
+        <div style="background: yellow" name="tab">1:1</div>
+      </div>
+
+      <div id="content">
+        <div id="table1" name="table">QnA 게시물</div>
+        <div id="table2" name="table">FAQ 게시물</div>
+        <div id="table3" name="table">1:1 질문 게시물</div>
+      </div>
+    </div>
+  </body>
+</html>

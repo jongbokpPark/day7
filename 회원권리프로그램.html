@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      #wrapper {
+        width: 1200px;
+        height: 900px;
+        margin: 50px auto 0;
+        background: rgb(233, 233, 233);
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      #leftSide {
+        width: 200px;
+        height: 100%;
+        /* background: navy; */
+        text-align: center;
+      }
+      /* #leftSide form {} */
+      /* #leftSide form div {} */
+      #leftSide input {
+        width: 92%;
+        height: 45px;
+      }
+
+      #centerSide {
+        width: 800px;
+        height: 100%;
+        /* background: yellow; */
+        /* border: 1px solid black; */
+      }
+      #searchSide {
+        text-align: center;
+      }
+      #searchSide select,
+      #searchSide input {
+        width: 200px;
+        height: 35px;
+      }
+      #searchSide button {
+        width: 120px;
+        height: 35px;
+      }
+
+      #rightSide {
+        width: 200px;
+        height: 100%;
+        /* background: crimson; */
+        text-align: center;
+      }
+      #rightSide input {
+        width: 92%;
+        height: 45px;
+      }
+      #leftSide button,
+      #rightSide button {
+        width: 43%;
+        height: 45px;
+      }
+
+      input::placeholder {
+        padding-left: 10px;
+      }
+      td {
+        padding-left: 10px;
+      }
+    </style>
+
+    <script>
+      let content; // 4. 테이블이 출력될 영역
+      let date = []; // 2. 여러사람 정보를 담아놓을 이차원 즉, 표 형태의 데이터
+      let currentIndex; // 17. 현재 사용자가 선택한 회원의 date 배열의 index
+
+      // 1. 한 사람에 대한 정보를 데이터베이스에 누적시키자
+      // 1. 실제 DBMS에 연동이 불가능하므로, 일정의 메모리 저장공간
+      // 1. 실제 db역활을 해줄 이차원 배열에 저장해놓자
+      function regist() {
+        // 11. 등록작업을 수행하기 전에, 제대로 입력을 했는지 여부를 체크한다
+        // 11. 유효성체크
+        if (form1.id.value == "") {
+          alert("아이디를 입력하세요");
+          return;
+        } else if (form1.name.value == "") {
+          alert("이름을 입력하세요");
+          return;
+        } else if (form1.phone.value == "") {
+          alert("연락처를 입력하세요");
+          return;
+        }
+
+        // 1. 한사람에 대한 정보를 일차원배열에 생성해보자
+        let member = [];
+
+        member[0] = form1.id.value;
+        member[1] = form1.name.value;
+        member[2] = form1.phone.value;
+
+        // 3. 이차원배열에 한사람 정보를 누적
+        date.push(member);
+
+        // 8. 목록출력
+        getList();
+
+        // 9. 입력폼 초기화
+        form1.id.value = "";
+        form1.name.value = "";
+        form1.phone.value = "";
+
+        // 10. 커서를 다시 아이디에 올려놓기
+        form1.id.focus();
+      }
+
+      // 13. 이지 준비된 데이터 가져오기
+      function loadDate() {
+        date.push(["PJB", "박종복", "010-4290-3048"]);
+        date.push(["KJB", "김복순", "010-2991-2047"]);
+        date.push(["RJB", "이종욱", "010-7392-7148"]);
+        date.push(["CJB", "최종훈", "010-5290-3054"]);
+        date.push(["JJB", "진주윤", "010-3270-5241"]);
+        date.push(["HJB", "하수환", "010-6250-2176"]);
+        date.push(["SJB", "송종희", "010-8230-9048"]);
+
+        getList();
+      }
+
+      // 14. 현재 선택된 회원의 정보를 우측 영역에 출력
+      function getDetail(n) {
+        console.log("저는 date 이차원배열 중 ", n, "번째 층에 살아요?");
+        currentIndex = n; // 18. 전역변수에 보관
+        // 이유는 다른 코드영역에서도 접근할 수 있도록
+
+        let member = date[n];
+        console.log(member);
+
+        // 15. 한사람 정보를 우측영역에 출력
+        form2.id.value = member[0];
+        form2.name.value = member[1];
+        form2.phone.value = member[2];
+      }
+
+      // 4. 쌓여있는 이차원 배열부터 html table로
+      // 4. 시각화 시킬 수 있는 함수
+      function getList() {
+        //깔끔하게 태그로 테이블을 받아주는 변수를 선언.
+        let tag = '<table border ="1px solid black" width="100%">';
+        tag += "<tr>"; //천장
+        tag += "<td>NO</td>"; // 왼쪽 오른쪽 벽
+        tag += "<td>ID</td>"; // 왼쪽 오른쪽 벽
+        tag += "<td>NAME</td>"; // 왼쪽 오른쪽 벽
+        tag += "<td>Phone</td>"; // 왼쪽 오른쪽 벽
+        tag += "</td>"; //바닥
+
+        // 12. 순번이 내림차순으로 나오게 하려면
+        // 12. 변수를 하나 만들어주고 선언하는 곳에 변수명을
+        // 12. 준후에 변수명--를 주면된다,
+        let totle = date.length;
+
+        // 5. 이차원배열에 크기 즉 층수 만큼 반복문을 돌리자
+        for (let i = 0; i < date.length; i++) {
+          let member = date[i]; // 6. 한사람의 정보를 꺼내기
+          // member는 일차원배열이다.
+
+          tag +=
+            '<tr onClick = "getDetail(' +
+            i +
+            ')" onMouseOver="this.style.background=\'yellow\'" onMouseOut="this.style.background=\'\'">';
+          tag += "<td>" + totle-- + "</td>"; // 왼쪽 오른쪽 벽
+          tag += "<td>" + member[0] + "</td>"; // 왼쪽 오른쪽 벽
+          tag += "<td>" + member[1] + "</td>"; // 왼쪽 오른쪽 벽
+          tag += "<td>" + member[2] + "</td>"; // 왼쪽 오른쪽 벽
+          tag += "</td>"; //바닥
+        }
+        tag += "</table>";
+
+        content.innerHTML = tag;
+      }
+
+      // 16. 회원삭제
+      function del() {
+        // 20. 회원을 선택하지 않고 지우려고 한다면 경도
+        if (currentIndex == undefined) {
+          alert("삭제할 회원을 선택해주세요");
+          return;
+        }
+
+        let resuilt = confirm("선택된 회원을 삭제 하시겠습니까?");
+
+        console.log("응답결과", resuilt);
+        if (resuilt) {
+          // 이차원 배열에서 splice 수행
+          // splice(삭제 index, 지울개수)
+          date.splice(currentIndex, 1);
+
+          // 19. 화면갱신(다시 한번 함수를 호출하여 갱신한다)
+          getList();
+        }
+      }
+
+      // 21. 현재 선택된 index를 이용하여, 일차원배열을 꺼내서
+      // 21. 그 일차원 배열을 이루고 있는 아이디,이름,연락처를 수정해보자
+      // 21. 수정하기
+      function edit() {
+        console.log("수정할 회원은", currentIndex, "층에 살아여");
+
+        // 22. currentIndex 를 이용하여 이차원배열인 date에서 이차원배열 꺼내기
+        date[currentIndex][0] = form2.id.value; // id
+        date[currentIndex][1] = form2.name.value; // name
+        date[currentIndex][2] = form2.phone.value; // phone
+
+        // 23. 화면갱신(다시 한번 함수를 호출하여 갱신한다)
+        getList();
+      }
+
+      addEventListener("load", function () {
+        content = document.getElementById("content");
+
+        // 7. 회원조회..
+        getList();
+      });
+    </script>
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="leftSide">
+        <form action="" name="form1">
+          <div>
+            <input type="text" name="id" placeholder="ID를 입력해주세요!" />
+          </div>
+          <div>
+            <input type="text" name="name" placeholder="이름을 입력해주세요!" />
+          </div>
+          <div>
+            <input
+              type="text"
+              name="phone"
+              placeholder="전화번호를 입력해주세요!"
+            />
+          </div>
+          <div>
+            <button onclick="regist()" type="button">등록</button>
+            <button onclick="loadDate()" type="button">불러오기</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="centerSide">
+        <div id="searchSide">
+          <select name="" id="">
+            <option value="">선택</option>
+            <option value="">id</option>
+            <option value="">이름</option>
+            <option value="">연락처</option>
+          </select>
+
+          <input type="text" placeholder="검색어 입력.." />
+
+          <button type="button">검색</button>
+        </div>
+
+        <div id="content"></div>
+      </div>
+
+      <div id="rightSide">
+        <form action="" name="form2">
+          <div>
+            <input type="text" name="id" placeholder="ID를 입력해주세요!" />
+          </div>
+          <div>
+            <input type="text" name="name" placeholder="이름을 입력해주세요!" />
+          </div>
+          <div>
+            <input
+              type="text"
+              name="phone"
+              placeholder="전화번호를 입력해주세요!"
+            />
+          </div>
+          <div>
+            <button type="button" onclick="edit()">수정</button>
+            <button type="button" onclick="del()">삭제</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
